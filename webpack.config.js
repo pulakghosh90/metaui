@@ -3,7 +3,6 @@ var path = require('path');
 
 var BUILD_DIR = path.resolve(__dirname, 'tgt/public/js');
 var APP_DIR = path.resolve(__dirname, 'src/app');
-console.log(APP_DIR);
 var config = {
     entry: APP_DIR + '/app.jsx',
     output: {
