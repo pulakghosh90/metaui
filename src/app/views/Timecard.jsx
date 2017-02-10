@@ -8,7 +8,7 @@ class Timecard extends React.Component {
     render() {
         return (
             <div>
-                <h2> Timecard work in progress</h2>
+                <div style={{ fontSize: "30px" }}>Timecard work in progress</div>
             </div>
         );
     }

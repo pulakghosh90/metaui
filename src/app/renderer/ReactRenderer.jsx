@@ -12,11 +12,6 @@ class ReactRenderer {
     }
     render(viewDef, commonProps) {
         this.commonProps = commonProps;
-        // return (
-        //     <Container>
-        //         viewDef.rows.map(this._renderRow);
-        //     </Container>
-        // );
         return viewDef.rows.map(this._renderRow);
     }
     renderRow(row, index) {

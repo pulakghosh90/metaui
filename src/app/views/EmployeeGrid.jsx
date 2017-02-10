@@ -29,7 +29,7 @@ class EmployeeGrid extends React.Component {
         return (
             <Row>
                 <Col xs={12} sm={12} md={12} lg={12}>
-                    <h1>Edit your employee here</h1>
+                    <div style={{ fontSize: "30px" }}>Select employee to edit</div>
                     <TableGrid headers={headers} rows={rows} onClick={this._handleClick} />
                 </Col>
             </Row>

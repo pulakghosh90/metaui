@@ -29,7 +29,7 @@ class Col extends React.Component {
             className += SPACE + this.props.className;
         }
         var col = (
-            <div className={className}>
+            <div className={className} style={this.props.style}>
                 {this.props.children}
             </div>
         );

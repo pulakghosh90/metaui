@@ -22657,7 +22657,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports.Settings = exports.Timecard = exports.SimpleEditor = exports.Layout = exports.EmployeeGrid = exports.Login = exports.Home = undefined;
+	exports.Settings = exports.Timecard = exports.SimpleEditor = exports.Container = exports.EmployeeGrid = exports.Login = exports.Home = undefined;
 	
 	var _Login = __webpack_require__(/*! views/Login.jsx */ 186);
 	
@@ -22671,9 +22671,9 @@
 	
 	var _EmployeeGrid2 = _interopRequireDefault(_EmployeeGrid);
 	
-	var _Layout = __webpack_require__(/*! views/Layout.jsx */ 203);
+	var _Container = __webpack_require__(/*! views/Container.jsx */ 206);
 	
-	var _Layout2 = _interopRequireDefault(_Layout);
+	var _Container2 = _interopRequireDefault(_Container);
 	
 	var _SimpleEditor = __webpack_require__(/*! views/SimpleEditor.jsx */ 204);
 	
@@ -22692,7 +22692,7 @@
 	exports.Home = _Home2.default;
 	exports.Login = _Login2.default;
 	exports.EmployeeGrid = _EmployeeGrid2.default;
-	exports.Layout = _Layout2.default;
+	exports.Container = _Container2.default;
 	exports.SimpleEditor = _SimpleEditor2.default;
 	exports.Timecard = _Timecard2.default;
 	exports.Settings = _Settings2.default;
@@ -40683,11 +40683,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var inlineStyle = {
-	    // paddingTop: "5px",
-	    paddingBottom: "5px"
-	};
-	
 	var Row = function (_React$Component) {
 	    _inherits(Row, _React$Component);
 	
@@ -40706,7 +40701,7 @@
 	            }
 	            var row = _react2.default.createElement(
 	                "div",
-	                { className: className, style: inlineStyle },
+	                { className: className, style: this.props.style },
 	                this.props.children
 	            );
 	            return row;
@@ -40785,7 +40780,7 @@
 	            }
 	            var col = _react2.default.createElement(
 	                "div",
-	                { className: className },
+	                { className: className, style: this.props.style },
 	                this.props.children
 	            );
 	            return col;
@@ -40860,7 +40855,7 @@
 	                        _react2.default.createElement(
 	                            "li",
 	                            null,
-	                            _react2.default.createElement(_Link2.default, { href: _Constants.URLS.EMPLOYEES, value: "Employee Editor", onClick: this.props.onSelectClick })
+	                            _react2.default.createElement(_Link2.default, { href: _Constants.URLS.EMPLOYEES, value: "Employees", onClick: this.props.onSelectClick })
 	                        ),
 	                        _react2.default.createElement(
 	                            "li",
@@ -40890,7 +40885,7 @@
   \********************************/
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -40920,12 +40915,12 @@
 	    }
 	
 	    _createClass(Home, [{
-	        key: 'render',
+	        key: "render",
 	        value: function render() {
 	            return _react2.default.createElement(
-	                'h2',
-	                null,
-	                'Welcome to Home screen!!'
+	                "div",
+	                { style: { fontSize: "30px" } },
+	                "Welcome to Home screen!!"
 	            );
 	        }
 	    }]);
@@ -41012,9 +41007,9 @@
 	                    _Components.Col,
 	                    { xs: 12, sm: 12, md: 12, lg: 12 },
 	                    _react2.default.createElement(
-	                        "h1",
-	                        null,
-	                        "Edit your employee here"
+	                        "div",
+	                        { style: { fontSize: "30px" } },
+	                        "Select employee to edit"
 	                    ),
 	                    _react2.default.createElement(_Components.TableGrid, { headers: headers, rows: rows, onClick: this._handleClick })
 	                )
@@ -41074,127 +41069,7 @@
 	exports.default = new ReactCommon();
 
 /***/ },
-/* 203 */
-/*!**********************************!*\
-  !*** ./src/app/views/Layout.jsx ***!
-  \**********************************/
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 7);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Components = __webpack_require__(/*! constants/Components */ 187);
-	
-	var _SimpleEditor = __webpack_require__(/*! views/SimpleEditor.jsx */ 204);
-	
-	var _SimpleEditor2 = _interopRequireDefault(_SimpleEditor);
-	
-	var _RouteManager = __webpack_require__(/*! common/RouteManager */ 212);
-	
-	var _RouteManager2 = _interopRequireDefault(_RouteManager);
-	
-	var _ReactCommon = __webpack_require__(/*! common/ReactCommon */ 202);
-	
-	var _ReactCommon2 = _interopRequireDefault(_ReactCommon);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var Layout = function (_React$Component) {
-	    _inherits(Layout, _React$Component);
-	
-	    function Layout(props) {
-	        _classCallCheck(this, Layout);
-	
-	        var _this = _possibleConstructorReturn(this, (Layout.__proto__ || Object.getPrototypeOf(Layout)).call(this, props));
-	
-	        _this.state = {
-	            CurrentView: _this.props.View,
-	            CurrentViewUrl: _this.props.ViewUrl,
-	            PreviousViewUrl: null,
-	            param: {}
-	        };
-	        _this._onSelectClick = _this.onSelectClick.bind(_this);
-	        _this._changeView = _this.changeView.bind(_this);
-	        return _this;
-	    }
-	
-	    _createClass(Layout, [{
-	        key: "componentDidMount",
-	        value: function componentDidMount() {
-	            _ReactCommon2.default.setContainer(this);
-	        }
-	    }, {
-	        key: "componentWillUnmount",
-	        value: function componentWillUnmount() {
-	            _ReactCommon2.default.setContainer(null);
-	        }
-	    }, {
-	        key: "onSelectClick",
-	        value: function onSelectClick(evt) {
-	            var ViewObj = _RouteManager2.default.getView(evt.target.hash);
-	            if (ViewObj) {
-	                this._changeView(ViewObj, null);
-	            }
-	        }
-	    }, {
-	        key: "changeView",
-	        value: function changeView(ViewObj) {
-	            this.setState({
-	                CurrentView: ViewObj.View,
-	                PreviousViewUrl: this.state.CurrentViewUrl,
-	                CurrentViewUrl: ViewObj.url,
-	                param: ViewObj.param
-	            });
-	        }
-	    }, {
-	        key: "render",
-	        value: function render() {
-	            return _react2.default.createElement(
-	                "div",
-	                null,
-	                _react2.default.createElement(
-	                    _Components.Row,
-	                    null,
-	                    _react2.default.createElement(
-	                        _Components.Col,
-	                        { xs: 12, sm: 12, md: 12, lg: 12 },
-	                        _react2.default.createElement(_Components.MenuBar, { onSelectClick: this._onSelectClick })
-	                    )
-	                ),
-	                _react2.default.createElement(
-	                    _Components.Row,
-	                    null,
-	                    _react2.default.createElement(
-	                        _Components.Col,
-	                        { xs: 12, sm: 12, md: 12, lg: 12 },
-	                        _react2.default.createElement(this.state.CurrentView, { param: this.state.param })
-	                    )
-	                )
-	            );
-	        }
-	    }]);
-	
-	    return Layout;
-	}(_react2.default.Component);
-	
-	exports.default = Layout;
-
-/***/ },
+/* 203 */,
 /* 204 */
 /*!****************************************!*\
   !*** ./src/app/views/SimpleEditor.jsx ***!
@@ -41287,7 +41162,7 @@
 	        _this._recursiveCloneChildren = _this.recursiveCloneChildren.bind(_this);
 	
 	        var parent = {};
-	        parent[viewDef.modelEntity] = {};
+	        parent[_this.viewDef.modelEntity] = {};
 	        _this.state = {};
 	        _this.state.parent = parent;
 	        //text field props
@@ -41419,11 +41294,6 @@
 	        key: "render",
 	        value: function render(viewDef, commonProps) {
 	            this.commonProps = commonProps;
-	            // return (
-	            //     <Container>
-	            //         viewDef.rows.map(this._renderRow);
-	            //     </Container>
-	            // );
 	            return viewDef.rows.map(this._renderRow);
 	        }
 	    }, {
@@ -41542,6 +41412,18 @@
 	
 	var _Components = __webpack_require__(/*! constants/Components */ 187);
 	
+	var _SimpleEditor = __webpack_require__(/*! views/SimpleEditor.jsx */ 204);
+	
+	var _SimpleEditor2 = _interopRequireDefault(_SimpleEditor);
+	
+	var _RouteManager = __webpack_require__(/*! common/RouteManager */ 212);
+	
+	var _RouteManager2 = _interopRequireDefault(_RouteManager);
+	
+	var _ReactCommon = __webpack_require__(/*! common/ReactCommon */ 202);
+	
+	var _ReactCommon2 = _interopRequireDefault(_ReactCommon);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41550,7 +41432,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	//this is used to hold dynamically created component from json metadata
 	var Container = function (_React$Component) {
 	    _inherits(Container, _React$Component);
 	
@@ -41559,24 +41440,69 @@
 	
 	        var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
 	
-	        _this.state = {};
+	        _this.state = {
+	            CurrentView: _this.props.View,
+	            CurrentViewUrl: _this.props.ViewUrl,
+	            PreviousViewUrl: null,
+	            param: {}
+	        };
+	        _this._onSelectClick = _this.onSelectClick.bind(_this);
+	        _this._changeView = _this.changeView.bind(_this);
 	        return _this;
 	    }
 	
 	    _createClass(Container, [{
-	        key: "componentWillMount",
-	        value: function componentWillMount() {}
+	        key: "componentDidMount",
+	        value: function componentDidMount() {
+	            _ReactCommon2.default.setContainer(this);
+	        }
 	    }, {
-	        key: "componentWillUpdate",
-	        value: function componentWillUpdate() {}
+	        key: "componentWillUnmount",
+	        value: function componentWillUnmount() {
+	            _ReactCommon2.default.setContainer(null);
+	        }
+	    }, {
+	        key: "onSelectClick",
+	        value: function onSelectClick(evt) {
+	            var ViewObj = _RouteManager2.default.getView(evt.target.hash);
+	            if (ViewObj) {
+	                this._changeView(ViewObj, null);
+	            }
+	        }
+	    }, {
+	        key: "changeView",
+	        value: function changeView(ViewObj) {
+	            this.setState({
+	                CurrentView: ViewObj.View,
+	                PreviousViewUrl: this.state.CurrentViewUrl,
+	                CurrentViewUrl: ViewObj.url,
+	                param: ViewObj.param
+	            });
+	        }
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            debugger;
 	            return _react2.default.createElement(
 	                "div",
 	                null,
-	                this.props.children
+	                _react2.default.createElement(
+	                    _Components.Row,
+	                    null,
+	                    _react2.default.createElement(
+	                        _Components.Col,
+	                        { xs: 12, sm: 12, md: 12, lg: 12 },
+	                        _react2.default.createElement(_Components.MenuBar, { onSelectClick: this._onSelectClick })
+	                    )
+	                ),
+	                _react2.default.createElement(
+	                    _Components.Row,
+	                    null,
+	                    _react2.default.createElement(
+	                        _Components.Col,
+	                        { xs: 12, sm: 12, md: 12, lg: 12 },
+	                        _react2.default.createElement(this.state.CurrentView, { param: this.state.param })
+	                    )
+	                )
 	            );
 	        }
 	    }]);
@@ -41632,9 +41558,9 @@
 	                "div",
 	                null,
 	                _react2.default.createElement(
-	                    "h2",
-	                    null,
-	                    " Timecard work in progress"
+	                    "div",
+	                    { style: { fontSize: "30px" } },
+	                    "Timecard work in progress"
 	                )
 	            );
 	        }
@@ -41691,8 +41617,8 @@
 	                "div",
 	                null,
 	                _react2.default.createElement(
-	                    "h2",
-	                    null,
+	                    "div",
+	                    { style: { fontSize: "30px" } },
 	                    " Settings work in progress"
 	                )
 	            );
@@ -42222,7 +42148,7 @@
 	        key: "gotToHome",
 	        value: function gotToHome() {
 	            document.body.style.backgroundColor = "#fff";
-	            _reactDom2.default.render(_react2.default.createElement(_ViewConstants.Layout, { View: _ViewConstants.Home }), document.getElementById("app"));
+	            _reactDom2.default.render(_react2.default.createElement(_ViewConstants.Container, { View: _ViewConstants.Home }), document.getElementById("app"));
 	        }
 	    }, {
 	        key: "gotToLogin",

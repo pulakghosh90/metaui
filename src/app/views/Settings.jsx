@@ -8,7 +8,7 @@ class Settings extends React.Component {
     render() {
         return (
             <div>
-                <h2> Settings work in progress</h2>
+                <div style={{ fontSize: "30px" }}> Settings work in progress</div>
             </div>
         );
     }

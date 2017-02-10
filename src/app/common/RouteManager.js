@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import pathToRegexp from "path-to-regexp";
 import { URLS } from "constants/Constants";
-import { Home, Login, Layout, EmployeeGrid, Settings, Timecard, SimpleEditor } from "constants/ViewConstants";
+import { Home, Login, Container, EmployeeGrid, Settings, Timecard, SimpleEditor } from "constants/ViewConstants";
 
 class RouteManager {
     getView(url) {
@@ -35,7 +35,7 @@ class RouteManager {
     gotToHome() {
         document.body.style.backgroundColor = "#fff";
         ReactDOM.render(
-            <Layout View={Home} />,
+            <Container View={Home} />,
             document.getElementById("app")
         );
     }

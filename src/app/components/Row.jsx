@@ -1,11 +1,6 @@
 import React from "react";
 import _ from "lodash";
 
-const inlineStyle = {
-    // paddingTop: "5px",
-    paddingBottom: "5px"
-};
-
 class Row extends React.Component {
     constructor(props) {
         super(props);
@@ -16,7 +11,7 @@ class Row extends React.Component {
             className += " " + this.props.className;
         }
         var row = (
-            <div className={className} style={inlineStyle}>
+            <div className={className} style={this.props.style}>
                 {this.props.children}
             </div>
         );

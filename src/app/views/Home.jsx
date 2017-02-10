@@ -3,7 +3,7 @@ import React from 'react';
 class Home extends React.Component {
     render() {
         return (
-            <h2>Welcome to Home screen!!</h2>
+            <div style={{ fontSize: "30px" }}>Welcome to Home screen!!</div>
         );
     }
 }

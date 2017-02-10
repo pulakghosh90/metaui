@@ -47,7 +47,7 @@ class SimpleEditor extends React.Component {
         this._recursiveCloneChildren = this.recursiveCloneChildren.bind(this);
 
         var parent = {};
-        parent[viewDef.modelEntity] = {};
+        parent[this.viewDef.modelEntity] = {};
         this.state = {};
         this.state.parent = parent;
         //text field props
