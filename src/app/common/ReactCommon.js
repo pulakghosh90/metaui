@@ -13,6 +13,11 @@ class ReactCommon {
             this.container.changeView(ViewObj);
         }
     }
+    goBack() {
+        if (this.container) {
+            this.container.back();
+        }
+    }
 }
 
 export default new ReactCommon();

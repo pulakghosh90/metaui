@@ -5,19 +5,20 @@ import _ from "lodash";
 
 class ReactRenderer {
     constructor() {
-        this._renderRow = this.renderRow.bind(this);
-        this._renderCell = this.renderCell.bind(this);
-        this._createComponent = this.createComponent.bind(this);
-        this._getComponentProps = this.getComponentProps.bind(this);
+        this.render = this.render.bind(this);
+        this.renderRow = this.renderRow.bind(this);
+        this.renderCell = this.renderCell.bind(this);
+        this.createComponent = this.createComponent.bind(this);
+        this.getComponentProps = this.getComponentProps.bind(this);
     }
     render(viewDef, commonProps) {
         this.commonProps = commonProps;
-        return viewDef.rows.map(this._renderRow);
+        return { viewDef: viewDef.rows.map(this.renderRow), primaryKey: this.primaryKey };
     }
     renderRow(row, index) {
         return (
             <Row key={"row:" + index} >
-                {row.cells.map(this._renderCell)}
+                {row.cells.map(this.renderCell)}
             </Row>
         );
     }
@@ -28,8 +29,11 @@ class ReactRenderer {
         var Component;
         var Cell;
         if (cell.fieldMetadata) {
-            Component = this._createComponent(cell.fieldMetadata);
-            var textFieldProps = this._getComponentProps(cell, index);
+            if (cell.fieldMetadata.isPrimaryKey) {
+                this.primaryKey = cell.fieldMetadata.name;
+            }
+            Component = this.createComponent(cell.fieldMetadata);
+            var textFieldProps = this.getComponentProps(cell, index);
             Cell = (
                 <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan}
                     key={"cell:" + index} >
@@ -75,7 +79,6 @@ class ReactRenderer {
             Cell = (
                 <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan}
                     key={"cell:" + index} >
-
                 </Col>
             );
         }

@@ -12,7 +12,7 @@ class EmployeeGrid extends React.Component {
     handleClick(evt) {
         debugger;
         var data = {
-            employeeId: evt.target.innerHTML
+            selectedId: evt.target.innerHTML
         };
         var EditorObj = RouteManager.getView(evt.target.hash);
         EditorObj.param = data;
@@ -20,12 +20,14 @@ class EmployeeGrid extends React.Component {
     }
     render() {
         debugger;
+        // var fakeEmployees = ServiceManager.getFakeData();
         var headers = [
-            { label: "EmployeeId", bind: "id", type: "LINK" },
-            { label: "EmployeeName", bind: "name", type: "TEXT_STATIC" },
-            { label: "UserName", bind: "userName", type: "TEXT_STATIC" }
+            { label: "EMPLOYEEID", bind: "EMPLOYEEID", type: "LINK" },
+            { label: "FIRSTNAME", bind: "FIRSTNAME", type: "TEXT_STATIC" },
+            { label: "LASTNAME", bind: "LASTNAME", type: "TEXT_STATIC" },
+            { label: "EMAIL", bind: "EMAIL", type: "TEXT_STATIC" }
         ];
-        var rows = ServiceManager.getEmployeeList();
+        var rows = ServiceManager.getEntityList("EMPLOYEE");
         return (
             <Row>
                 <Col xs={12} sm={12} md={12} lg={12}>

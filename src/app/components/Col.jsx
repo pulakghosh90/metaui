@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 
 const col_xs_prefix = "col-xs-";
 const col_sm_prefix = "col-sm-";

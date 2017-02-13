@@ -1,9 +1,9 @@
 import React from "react";
-import ReactRenderer from "renderer/ReactRenderer.jsx";
 import _ from "lodash";
+import ReactRenderer from "renderer/ReactRenderer.jsx";
 import ServiceManager from "service/ServiceManager";
-import { Row, Col, Link } from "constants/Components";
-import Container from "views/Container.jsx";
+import { Row, Col, Link, Message } from "constants/Components";
+import ReactCommon from "common/ReactCommon";
 
 const commonFieldProps = {
     textBox: {
@@ -34,9 +34,6 @@ class SimpleEditor extends React.Component {
     constructor(props) {
         debugger;
         super(props);
-        this.viewDef = ServiceManager.getViewDef();
-        this.componentId = this.viewDef.name;
-        this.modelEntity = this.viewDef.modelEntity;
 
         //event handlers
         this._onChange = this.onChange.bind(this);
@@ -46,10 +43,15 @@ class SimpleEditor extends React.Component {
         this._renderJSON = this.renderJSON.bind(this);
         this._recursiveCloneChildren = this.recursiveCloneChildren.bind(this);
 
+        this.viewDef = ServiceManager.getViewDef("EMPLOYEE", "EDITOR");
+        this.componentId = this.viewDef.name;
+        this.modelEntity = this.viewDef.modelEntity;
+
         var parent = {};
         parent[this.viewDef.modelEntity] = {};
         this.state = {};
         this.state.parent = parent;
+        this.state.message = {};
         //text field props
         this.commonProps = commonFieldProps;
         this.commonProps.textBox.handlers = { onChange: this._onChange };
@@ -59,26 +61,30 @@ class SimpleEditor extends React.Component {
             onDelete: this._onDelete
         };
 
-        this.childComponents = this._renderJSON();
+        var viewInfo = this._renderJSON();
+        this.childComponents = viewInfo.viewDef;
+        this.primaryKey = viewInfo.primaryKey;
     }
     componentDidMount() {
         debugger;
         //fetch record
-        var emp = ServiceManager.getEmployees(this.props.param.employeeId);
+        var selectedEntity = {};
+        selectedEntity[this.primaryKey] = this.props.param.selectedId;
+        var entity = ServiceManager.getEntity(this.modelEntity, selectedEntity);
         var newState = { parent: {} };
-        newState.parent[this.modelEntity] = emp;
+        newState.parent[this.modelEntity] = entity;
         this.setState(newState);
     }
     render() {
-        console.log(this.state);
         var children = this._recursiveCloneChildren(this.childComponents);
-        debugger;
         return (
             <div id="SimpleEditor" >
+                {this.state.message !== {} &&
+                    <Message {...this.state.message} />
+                }
                 {children}
             </div>
         );
-
     }
     renderJSON() {
         return ReactRenderer.render(this.viewDef, this.commonProps);
@@ -101,11 +107,13 @@ class SimpleEditor extends React.Component {
     }
     onSave(evt) {
         debugger;
-        console.log(this.state);
+        var entity = this.state.parent[this.modelEntity];
+        var response = ServiceManager.saveEntity(this.modelEntity, entity);
+        this.setState(response);
     }
     onCancel(evt) {
         debugger;
-        console.log(this.state);
+        ReactCommon.goBack();
     }
     onDelete(evt) {
         debugger;

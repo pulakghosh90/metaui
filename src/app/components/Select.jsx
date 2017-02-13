@@ -1,24 +1,66 @@
 import React from "react";
 
+/******
+accepts property in the below format
+props = {
+    labelText: String
+    htmlAttrs: {},
+    styles: {
+        select: {className: String, inlineStyle: {}},
+        label: {className: String, inlineStyle: {}}
+    },
+    options: [],
+    value: String,
+    handlers: {},
+    bindAttr: String,
+} 
+*******/
 class Select extends React.Component {
     constructor(props) {
         super(props);
-        this._onClick = this.onClick.bind(this);
+        this._onChange = this.onChange.bind(this);
+        this.state = { value: "" };
     }
-    onClick(evt) {
+    onChange(evt) {
+        debugger;
+        var val = evt.target.options[evt.target.selectedIndex].value;
+        var state = {};
+        var entityNprops = this.props.bindAttr.split(".");
+        if (entityNprops.length > 1) {
+            var entityName = entityNprops[0];
+            var props = entityNprops[1];
+            state[entityName] = {};
+            state[entityName][props] = val;
+        } else {
+            state[entityNprops[0]] = val;
+        }
+        this.setState({ value: val });
+        this.props.handlers.onChange(state);
     }
     render() {
-        var key = this.props.key ? this.props.key : this.props.id;
-        var className = this.props.className ? this.props.className : "";
-        var options = this.props.options;
-        var optionId = -1;
+        var htmlAttrs = this.props.htmlAttrs || {};
+        var selectStyles = this.props.styles.select || {};
+        var labelStyles = this.props.styles.label || {};
+        var options = this.props.options || [];
+        var value = this.props.value;
+
         return (
             <div>
-                <select key={key} id={this.props.id} className={className} onClick={this._onClick}>
+                {
+                    this.props.labelText &&
+                    <label className={labelStyles.className} style={{ paddingRight: "10px" }}>
+                        {this.props.labelText}
+                    </label>
+                }
+                <select id={htmlAttrs.id} className={selectStyles.className} value={this.state.value} onChange={this._onChange}
+                    style={selectStyles.inlineStyle}>
                     {
-                        options.map((option) => {
-                            optionId++;
-                            return <option key={optionId} value={option.value}>{option.label}</option>;
+                        options.map((option, index) => {
+                            if (option.value === value) {
+                                return <option key={index} value={option.value}>{option.label}</option>;
+                            } else {
+                                return <option key={index} value={option.value}>{option.label}</option>;
+                            }
                         })
                     }
                 </select>

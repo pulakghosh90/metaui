@@ -1,20 +1,14 @@
 const Users = [
     {
-        orgoid: "ADP",
-        userName: "super",
-        pwd: "super"
+        orgId: "G3J8EKQJ6481CSDC",
+        userName: "adp",
+        pwd: "adp"
     },
     {
-        orgoid: "ADPTLM",
+        orgId: "ADPTLM",
         userName: "user",
         pwd: "user"
-    },
-    {
-        orgoid: "",
-        userName: "",
-        pwd: ""
     }
 ];
-
 
 export { Users };

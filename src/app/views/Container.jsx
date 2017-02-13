@@ -9,8 +9,8 @@ class Container extends React.Component {
         super(props);
         this.state = {
             CurrentView: this.props.View,
-            CurrentViewUrl: this.props.ViewUrl,
-            PreviousViewUrl: null,
+            currentViewUrl: this.props.ViewUrl,
+            previousViewUrl: null,
             param: {}
         };
         this._onSelectClick = this.onSelectClick.bind(this);
@@ -21,20 +21,6 @@ class Container extends React.Component {
     }
     componentWillUnmount() {
         ReactCommon.setContainer(null);
-    }
-    onSelectClick(evt) {
-        var ViewObj = RouteManager.getView(evt.target.hash);
-        if (ViewObj) {
-            this._changeView(ViewObj, null);
-        }
-    }
-    changeView(ViewObj) {
-        this.setState({
-            CurrentView: ViewObj.View,
-            PreviousViewUrl: this.state.CurrentViewUrl,
-            CurrentViewUrl: ViewObj.url,
-            param: ViewObj.param
-        });
     }
     render() {
         return (
@@ -51,6 +37,26 @@ class Container extends React.Component {
                 </Row>
             </div>
         );
+    }
+    onSelectClick(evt) {
+        if (this.state.currentViewUrl !== evt.target.hash) {
+            var ViewObj = RouteManager.getView(evt.target.hash);
+            if (ViewObj) {
+                this._changeView(ViewObj);
+            }
+        }
+    }
+    changeView(ViewObj) {
+        this.setState({
+            CurrentView: ViewObj.View,
+            previousViewUrl: this.state.currentViewUrl,
+            currentViewUrl: ViewObj.url,
+            param: ViewObj.param
+        });
+    }
+    back() {
+        var PrevView = RouteManager.getView(this.state.previousViewUrl);
+        this._changeView(PrevView);
     }
 }
 

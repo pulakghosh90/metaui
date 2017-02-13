@@ -27,7 +27,7 @@ var config = {
         contentBase: path.resolve(__dirname, 'tgt/public'),
         inline: true,
         stats: "errors-only",
-        port: 3000,
+        port: 3030,
         historyApiFallback: true
     }
 };

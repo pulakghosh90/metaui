@@ -7,6 +7,7 @@ class TableGrid extends React.Component {
     }
 
     render() {
+        debugger;
         var key = this.props.key ? this.props.key : this.props.id;
         var headers = this.props.headers;
         var rows = this.props.rows;

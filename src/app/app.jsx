@@ -1,5 +1,5 @@
-'use strict';
+"use strict";
 
-import LoginManager from 'common/LoginManager';
+import LoginManager from "common/LoginManager";
 
 LoginManager.checkAndLogin();

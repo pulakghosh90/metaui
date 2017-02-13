@@ -1,5 +1,4 @@
 import React from "react";
-import _ from "lodash";
 
 /******
 accepts property in the below format
@@ -34,7 +33,6 @@ class TextBox extends React.Component {
         } else {
             state[entityNprops[0]] = evt.target.value;
         }
-        this.currentVal = state;
         this.props.handlers.onChange(state);
     }
     findValue() {

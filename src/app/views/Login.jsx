@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Checkbox, Label, TextBox, Row, Col } from "constants/Components";
+import { Button, Checkbox, Label, TextBox, Row, Col, Message } from "constants/Components";
 import LoginManager from "common/LoginManager";
 
 class Login extends React.Component {
@@ -9,7 +9,7 @@ class Login extends React.Component {
         this._onChange = this.onChange.bind(this);
 
         this.state = {
-            orgoid: "",
+            orgId: "",
             userName: "",
             pwd: "",
             remeberMe: false,
@@ -30,10 +30,10 @@ class Login extends React.Component {
         var orgOidFieldProps = Object.assign({}, this.commonFieldProps,
             {
                 htmlAttrs: {
-                    placeholder: "Enter orgoid",
-                    id: "login:orgoid"
+                    placeholder: "Enter orgid",
+                    id: "login:orgid"
                 },
-                bindAttr: "orgoid"
+                bindAttr: "orgId"
             });
         var userNameFieldProps = Object.assign({}, this.commonFieldProps,
             {
@@ -80,15 +80,15 @@ class Login extends React.Component {
             handlers: { onClick: this._onSubmit }
         };
 
+        var message = {
+            type: "error",
+            message: this.state.errorMsg
+        };
         return (
             <Row>
                 <Col xs={12} sm={12} md={12} lg={12}>
                     {this.state.errorMsg &&
-                        <Row>
-                            <Col xs={12} sm={12} md={12} lg={12}>
-                                <div className="form-signin alert alert-danger">{this.state.errorMsg}</div>
-                            </Col>
-                        </Row>
+                        <Message {...message} className="form-signin" />
                     }
                     <Row>
                         <Col xs={12} sm={12} md={12} lg={12}>

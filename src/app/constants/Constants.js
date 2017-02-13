@@ -6,6 +6,17 @@ const URLS = {
     TIMECARD: "#/timecard"
 };
 
+const SERVICE = {
+    METASERVICE: {
+        ENTITY: "http://localhost:3000/meta/entity/:orgId/:entity",
+        FIELD: "http://localhost:3000/meta/fields/:orgId/:entity",
+        VIEW: "http://localhost:3000/meta/view/:orgId/:entity/:layout",
+        RULE: "http://localhost:3000/meta/rule/:orgId/:rule"
+    },
+    DATASERVICE: "http://localhost:3001/data/:orgId/:entityType"
+}
+
 export {
-    URLS
+    URLS,
+    SERVICE
 };
