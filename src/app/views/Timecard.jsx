@@ -2,6 +2,7 @@ import React from "react";
 import { TimecardFilter, Row, Col, GriddleGrid } from "constants/Components";
 import ReactTableRenderer from "renderer/ReactTableRenderer.jsx";
 import ServiceManager from "service/ServiceManager";
+import AppUtil from "util/AppUtil";
 
 const commonFieldProps = {
     textBox: {
@@ -62,19 +63,20 @@ class Timecard extends React.Component {
                 employees = response.data.reduce((list, val) => {
                     list.push({ value: val.EMPLOYEEID, label: val.FIRSTNAME + " " + val.LASTNAME });
                     return list;
-                }, []);
-                return ServiceManager.getEntityList(this.modelEntity, { EMPLOYEEID: response.data[0].EMPLOYEEID });
+                }, [{ value: "", label: "Select an employee" }]);
+                _this.setState({ filter: { employees } });
             })
-            .then(response => {
-                _this.setState({ results: response.data, filter: { employees } });
-            })
-            .catch(error => console.error(error))
             .catch(error => console.error(error));
     }
     render() {
         debugger;
         return (
             <div>
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={12}>
+                        <div style={{ fontSize: "30px", paddingBottom: "10px" }}>Timecard Editor</div>
+                    </Col>
+                </Row>
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
                         <TimecardFilter {...this.state.filter} onFilterChange={this._onFilterChange} />
@@ -85,7 +87,7 @@ class Timecard extends React.Component {
                         <GriddleGrid results={this.state.results} columnMetadata={this.columnMetadata} columns={this.columns} />
                     </Col>
                 </Row>
-                <Row style={{ paddingTop: "10px" }}>
+                <Row>
                     {this.actions}
                 </Row>
             </div>
@@ -104,7 +106,7 @@ class Timecard extends React.Component {
         };
         var _this = this;
         ServiceManager.getEntityList(this.modelEntity, filter)
-            .then(response => _this.setState({ results: response.data }))
+            .then(response => _this.setState({ results: AppUtil.timePairDateFormat(response.data) }))
             .catch(error => console.log(error));
     }
     onTimePairChange(evt) {

@@ -13,7 +13,7 @@ class TextBox extends React.Component {
         debugger;
         return (
             <div>
-                <input value={this.props.data} onChange={this._onChange} style={{ width: "150px" }} />
+                <input value={this.props.data} onChange={this._onChange} style={{ width: "160px" }} />
             </div>
         );
     }
@@ -25,7 +25,7 @@ class GriddleGrid extends React.Component {
     }
     render() {
         return (
-            <Griddle {...this.props} />
+            <Griddle {...this.props} tableClassName="table table-hover" useGriddleStyles={false} showPager={false} />
         );
     }
 }

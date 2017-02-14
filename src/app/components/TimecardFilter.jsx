@@ -22,7 +22,6 @@ const timeCardProps = {
 class TimecardFilter extends React.Component {
     constructor(props) {
         super(props);
-        this._onChange = this.onChange.bind(this);
         this.employeeProps = Object.assign({}, commonProps);
         this.employeeProps.handlers.onChange = this._onChange;
         this.employeeProps.labelText = "Employee:";
@@ -31,10 +30,6 @@ class TimecardFilter extends React.Component {
         this.payPeriodProps.labelText = "Pay Period:";
         this.timecardProps = Object.assign({}, timeCardProps);
         this.timecardProps.labelText = "Timecard";
-    }
-    onChange(val) {
-        debugger;
-        this.props.onFilterChange(val);
     }
     render() {
         debugger;
@@ -51,7 +46,7 @@ class TimecardFilter extends React.Component {
                     </Col>
                 }
                 <Col xs={5} sm={5} md={5} lg={5}>
-                    <Select {...this.employeeProps} handlers={{ onChange: this._onChange }} />
+                    <Select {...this.employeeProps} handlers={{ onChange: this.props.onFilterChange }} />
                 </Col>
             </Row>
         );

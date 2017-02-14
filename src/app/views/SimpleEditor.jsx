@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 import ReactRenderer from "renderer/ReactRenderer.jsx";
 import ServiceManager from "service/ServiceManager";
-import { Message } from "constants/Components";
+import { Row, Col, Message } from "constants/Components";
 import ReactCommon from "common/ReactCommon";
 
 const commonFieldProps = {
@@ -21,6 +21,16 @@ const commonFieldProps = {
         handlers: {},
         rules: {},
         validator: () => { }
+    },
+    checkBox: {
+        labelText: null,
+        htmlAttrs: {},
+        styles: {
+            label: { className: "", inlineStyle: {} }
+        },
+        value: false,
+        handlers: {},
+        bindAttr: null
     },
     action: {
         labelText: "",
@@ -55,6 +65,7 @@ class SimpleEditor extends React.Component {
         //text field props
         this.commonProps = commonFieldProps;
         this.commonProps.textBox.handlers = { onChange: this._onChange };
+        this.commonProps.checkBox.handlers = { onChange: this._onChange };
         this.commonProps.action.handlers = {
             onSave: this._onSave,
             onCancel: this._onCancel,
@@ -83,6 +94,11 @@ class SimpleEditor extends React.Component {
         var children = this._recursiveCloneChildren(this.childComponents);
         return (
             <div id="SimpleEditor" >
+                <Row>
+                    <Col xs={12} sm={12} md={12} lg={12}>
+                        <div style={{ fontSize: "30px", paddingBottom: "10px" }}>Employee Editor</div>
+                    </Col>
+                </Row>
                 {this.state.message !== {} && <Message {...this.state.message} />}
                 {children}
             </div>
@@ -107,15 +123,18 @@ class SimpleEditor extends React.Component {
         this.setState(newState);
     }
     onSave(evt) {
+        debugger;
         var _this = this;
-        ServiceManager.saveEntity(this.modelEntity, this.state.parent[this.modelEntity], function (response) {
-            _this.setState({
-                message: {
-                    type: response.status,
-                    message: response.status === "success" ? "Save successful!" : "Save failed!"
-                }
-            });
-        });
+        ServiceManager.saveEntity(this.modelEntity, this.state.parent[this.modelEntity])
+            .then(response => {
+                _this.setState({
+                    message: {
+                        type: response.status,
+                        message: response.status === "success" ? "Save successful!" : "Save failed!"
+                    }
+                });
+            })
+            .catch(error => console.error(error));
     }
     onCancel(evt) {
         ReactCommon.goBack();

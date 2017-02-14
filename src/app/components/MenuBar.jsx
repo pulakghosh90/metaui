@@ -16,7 +16,7 @@ class MenuBar extends React.Component {
                 </div>
                 <div id="navbar" className="navbar-collapse collapse">
                     <ul className="nav navbar-nav">
-                        <li><Link href={URLS.EMPLOYEES} value="Employees" onClick={this.props.onSelectClick} /></li>
+                        <li><Link href={URLS.EMPLOYEES} value="Employee" onClick={this.props.onSelectClick} /></li>
                         <li><Link href={URLS.TIMECARD} value="Timecard" onClick={this.props.onSelectClick} /></li>
                         <li><Link href={URLS.SETTINGS} value="Settings" onClick={this.props.onSelectClick} /></li>
                     </ul>

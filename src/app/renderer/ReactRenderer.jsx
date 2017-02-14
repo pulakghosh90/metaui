@@ -1,5 +1,5 @@
 import React from "react";
-import { TextBox, Row, Col, Button } from "constants/Components";
+import { TextBox, Row, Col, Button, Checkbox } from "constants/Components";
 import { SimpleEditor } from "constants/ViewConstants";
 import _ from "lodash";
 
@@ -28,15 +28,14 @@ class ReactRenderer {
         var fieldMetadata = cell.fieldMetadata;
         var Component;
         var Cell;
-        if (cell.fieldMetadata) {
+        if (cell.fieldMetadata && !cell.modelElement.includes("ADDRESS") && !cell.modelElement.includes("SERVICEDATES")) {
             if (cell.fieldMetadata.isPrimaryKey) {
                 this.primaryKey = cell.fieldMetadata.name;
             }
             Component = this.createComponent(cell.fieldMetadata);
             var textFieldProps = this.getComponentProps(cell, index);
             Cell = (
-                <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan}
-                    key={"cell:" + index} >
+                <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan} key={"cell:" + index} >
                     <Component {...textFieldProps} />
                 </Col>
             );
@@ -88,19 +87,45 @@ class ReactRenderer {
         switch (fieldMetadata.dataType) {
             case "STRING":
                 return TextBox;
+            case "BOOLEAN":
+                return Checkbox;
             default:
                 return TextBox;
         }
     }
     getComponentProps(cell, index) {
-        return _.merge({}, this.commonProps.textBox,
-            {
-                labelText: cell.fieldMetadata.description,
-                htmlAttrs: {
-                    id: cell.modelElement + index
-                },
-                bindAttr: cell.fieldMetadata.key
-            });
+        switch (cell.fieldMetadata.dataType) {
+            case "STRING":
+                return _.merge({}, this.commonProps.textBox,
+                    {
+                        labelText: cell.fieldMetadata.description,
+                        htmlAttrs: {
+                            id: cell.modelElement + index
+                        },
+                        bindAttr: cell.fieldMetadata.key
+                    });
+            case "BOOLEAN":
+                return _.merge({}, this.commonProps.checkBox, {
+                    labelText: cell.fieldMetadata.description,
+                    htmlAttrs: { id: cell.modelElement + index },
+                    styles: {
+                        label: { className: "", inlineStyle: {} }
+                    },
+                    value: false,
+                    handlers: {},
+                    bindAttr: cell.fieldMetadata.key
+                });
+            default:
+                return _.merge({}, this.commonProps.textBox,
+                    {
+                        labelText: cell.fieldMetadata.description,
+                        htmlAttrs: {
+                            id: cell.modelElement + index
+                        },
+                        bindAttr: cell.fieldMetadata.key
+                    });;
+        }
+
     }
 }
 

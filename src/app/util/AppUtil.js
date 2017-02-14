@@ -1,4 +1,5 @@
 import _ from "lodash";
+import moment from "moment";
 import { SERVICE } from "constants/Constants";
 import AppContext from "common/AppContext";
 
@@ -38,6 +39,15 @@ class AppUtil {
             url += "?isLookup=true";
         }
         return url;
+    }
+    timePairDateFormat(timepairList) {
+        debugger;
+        return timepairList.map(timepair => Object.assign(
+            {},
+            timepair,
+            { INTIME: moment(timepair.INTIME).format("YYYY/MM/DD hh:mm:ss") },
+            { OUTTIME: moment(timepair.OUTTIME).format("YYYY/MM/DD hh:mm:ss") }
+        ));
     }
 }
 
