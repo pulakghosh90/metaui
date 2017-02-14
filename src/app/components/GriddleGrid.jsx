@@ -13,7 +13,7 @@ class TextBox extends React.Component {
         debugger;
         return (
             <div>
-                <input value={this.props.data} onChange={this._onChange} />
+                <input value={this.props.data} onChange={this._onChange} style={{ width: "150px" }} />
             </div>
         );
     }

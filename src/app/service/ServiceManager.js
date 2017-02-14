@@ -1,96 +1,94 @@
-import { employees, empDetails } from "data/employees";
-import eTimecard_View from "data/eTimecard_View";
 import { Users } from "data/Users";
 import AppUtil from "util/AppUtil";
-import eTimecardView from "data/eTimecard";
 
 class ServiceManager {
-    callService(config) {
+    xhr(config) {
         var method = config.method;
         var url = config.url;
-        var callback = config.callback;
         var json = config.json;
+        var async = config.async;
         var response;
-
+        if (async && (!config.resolve || !config.reject)) {
+            throw new Error("Async call returns promise which needs resolve and reject callbacks.");
+        }
         var request = new XMLHttpRequest();
-        request.open(method, url, false);
+        request.open(method, url, async);
         request.setRequestHeader("Content-Type", "application/json");
         request.setRequestHeader("Accept", "application/json");
         request.onload = function () {
             if (this.status >= 200 && this.status < 300) {
-                if (callback) {
-                    callback(JSON.parse(request.response));
-                } else {
-                    response = JSON.parse(request.response);
+                response = JSON.parse(request.response);
+                if (async) {
+                    config.resolve(response);
                 }
-            } else {
-                if (callback) {
-                    callback({
-                        status: this.status,
-                        statusText: request.statusText
-                    });
-                } else {
-                    response = {
-                        status: this.status,
-                        statusText: request.statusText
-                    };
-                }
-            }
-        };
-        request.onerror = function () {
-            if (callback) {
-                callback({
-                    status: this.status,
-                    statusText: request.statusText
-                });
             } else {
                 response = {
                     status: this.status,
                     statusText: request.statusText
                 };
+                if (async) {
+                    config.reject(response);
+                }
             }
         };
-        if (json) {
+        request.onerror = function () {
+            response = {
+                status: this.status,
+                statusText: request.statusText
+            };
+            if (async) {
+                config.reject(response);
+            }
+        };
+        if (method !== "GET" && json) {
             request.send(json);
         }
         else {
             request.send();
         }
-        return response;
+        if (!async) {
+            return response;
+        }
+    }
+    callServiceSync(config) {
+        config.async = false;
+        return this.xhr(config);
+    }
+    callServiceAsync(config) {
+        var _this = this;
+        return new Promise((resolve, reject) => {
+            config.async = true;
+            config.resolve = resolve;
+            config.reject = reject;
+            _this.xhr(config);
+        });
     }
     authenticateAndGetUserDetails(user) {
         return Users.filter(u => u.orgid === user.orgid && u.userName === user.userName && u.pwd === user.pwd)[0];
     }
-    getEntity(entityType, entity) {
-        var url = AppUtil.getDataServiceUrl(entityType, "read");
-        var response = this.callService({ method: "POST", url: url, json: JSON.stringify(entity) });
-        return response.data;
+    getEntity(entityType, filter) {
+        var url = AppUtil.getDataServiceUrl(entityType, false, "read");
+        return this.callServiceAsync({ method: "POST", url: url, json: JSON.stringify(filter) });
     }
-    getEntityList(entityType) {
-        var url = AppUtil.getDataServiceUrl(entityType, "list");
-        var response = this.callService({ method: "POST", url: url });
-        return response.data;
+    getEntityList(entityType, filter) {
+        var url = AppUtil.getDataServiceUrl(entityType, true, "read");
+        return this.callServiceAsync({ method: "POST", url: url, json: JSON.stringify(filter) });
+    }
+    getEntityLookupList(entityType) {
+        var url = AppUtil.getDataServiceUrl(entityType, true, "read", true);
+        return this.callServiceAsync({ method: "POST", url: url });
     }
     saveEntity(entityType, entity) {
         var url = AppUtil.getDataServiceUrl(entityType);
-        var response = this.callService({ method: "PUT", url: url, json: JSON.stringify(entity) });
-        return response.data;
+        return this.callServiceAsync({ method: "PUT", url: url, json: JSON.stringify(entity) });
     }
     deleteEntity(entityType, entity) {
         var url = AppUtil.getDataServiceUrl(entityType);
-        var response = this.callService({ method: "DELETE", url: url, json: JSON.stringify(entity) });
-        return response.data;
+        return this.callServiceAsync({ method: "DELETE", url: url, json: JSON.stringify(entity) });
     }
     getViewDef(entity, layout) {
         var url = AppUtil.getViewDefServiceUrl(entity, layout);
-        var response = this.callService({ method: "GET", url: url });
-        return response.data;
-    }
-    getFakeData() {
-        return AppUtil.generateFakeData(100);
-    }
-    getTimecardGridFiledDef() {
-        return eTimecardView.data.rows;
+        return this.callServiceSync({ method: "GET", url: url });
     }
 }
 

@@ -5,12 +5,10 @@ const commonProps = {
     labelText: "",
     htmlAttrs: {},
     styles: {
-        select: { className: "", inlineStyle: { width: "100px" } },
+        select: { className: "", inlineStyle: {} },
         label: { className: "", inlineStyle: {} }
     },
-    options: [{ label: "pulak10", value: "pulak10" }, { label: "pulak1", value: "pulak1" }, { label: "pulak2", value: "pulak2" }],
-    value: "pulak",
-    bindAttr: "EMPLOYEENAME",
+    bindAttr: "EMPLOYEEID",
     handlers: {}
 };
 const timeCardProps = {
@@ -36,20 +34,24 @@ class TimecardFilter extends React.Component {
     }
     onChange(val) {
         debugger;
-        console.log(val);
+        this.props.onFilterChange(val);
     }
     render() {
         debugger;
+        this.employeeProps.options = this.props.employees || [];
+        if (this.props.employees.length > 0)
+            this.employeeProps.value = this.props.employees[0].value;
+        else
+            this.employeeProps.value = "";
         return (
-            <Row>
-                <Col xs={2} sm={2} md={2} lg={2}>
-                    <Label {...this.timecardProps} />
-                </Col>
+            <Row style={{ paddingBottom: "10px" }}>
+                {false &&
+                    <Col xs={5} sm={5} md={5} lg={5}>
+                        <Select {...this.payPeriodProps} />
+                    </Col>
+                }
                 <Col xs={5} sm={5} md={5} lg={5}>
-                    <Select {...this.payPeriodProps} />
-                </Col>
-                <Col xs={5} sm={5} md={5} lg={5}>
-                    <Select {...this.employeeProps} />
+                    <Select {...this.employeeProps} handlers={{ onChange: this._onChange }} />
                 </Col>
             </Row>
         );

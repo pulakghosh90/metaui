@@ -7,7 +7,6 @@ class TableGrid extends React.Component {
     }
 
     render() {
-        debugger;
         var key = this.props.key ? this.props.key : this.props.id;
         var headers = this.props.headers;
         var rows = this.props.rows;
@@ -24,6 +23,7 @@ class TableGrid extends React.Component {
                     }
                 </thead>
                 <tbody>
+
                     {
                         rows.map((row) => {
                             return <tr key={id++}>
@@ -41,6 +41,12 @@ class TableGrid extends React.Component {
                                 }
                             </tr>
                         })
+                    }
+
+                    {rows && rows.length === 0 &&
+                        <tr >
+                            <td>No record found</td>
+                        </tr>
                     }
                 </tbody>
             </table>
