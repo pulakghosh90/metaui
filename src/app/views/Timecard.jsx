@@ -109,8 +109,17 @@ class Timecard extends React.Component {
             .then(response => _this.setState({ results: AppUtil.timePairDateFormat(response.data) }))
             .catch(error => console.log(error));
     }
-    onTimePairChange(evt) {
+    onTimePairChange(timePair) {
         debugger;
+        var timePairs = this.state.results;
+        timePairs = timePairs.map(tp => {
+            if (tp.key === timePair.key) {
+                return timePair;
+            } else {
+                return tp;
+            }
+        });
+        this.setState({ results: timePairs });
     }
     onSave() {
         debugger;

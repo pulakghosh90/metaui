@@ -41351,6 +41351,7 @@
 	        var _this = _possibleConstructorReturn(this, (TextBox.__proto__ || Object.getPrototypeOf(TextBox)).call(this, props));
 	
 	        _this._onChange = _this.onChange.bind(_this);
+	        _this.state = { style: { width: "160px" } };
 	        return _this;
 	    }
 	
@@ -41358,6 +41359,10 @@
 	        key: "onChange",
 	        value: function onChange(evt) {
 	            debugger;
+	            var state = {};
+	            state[this.props.metadata.columnName] = evt.target.value;
+	            this.setState({ style: { border: "1px solid #ff0000" } });
+	            this.props.metadata.onChange(Object.assign({}, this.props.rowData, state));
 	        }
 	    }, {
 	        key: "render",
@@ -41366,7 +41371,7 @@
 	            return _react2.default.createElement(
 	                "div",
 	                null,
-	                _react2.default.createElement("input", { value: this.props.data, onChange: this._onChange, style: { width: "160px" } })
+	                _react2.default.createElement("input", { value: this.props.data, onChange: this._onChange, style: this.state.style })
 	            );
 	        }
 	    }]);
@@ -53451,8 +53456,17 @@
 	        }
 	    }, {
 	        key: "onTimePairChange",
-	        value: function onTimePairChange(evt) {
+	        value: function onTimePairChange(timePair) {
 	            debugger;
+	            var timePairs = this.state.results;
+	            timePairs = timePairs.map(function (tp) {
+	                if (tp.key === timePair.key) {
+	                    return timePair;
+	                } else {
+	                    return tp;
+	                }
+	            });
+	            this.setState({ results: timePairs });
 	        }
 	    }, {
 	        key: "onSave",
