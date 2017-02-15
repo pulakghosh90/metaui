@@ -27,12 +27,12 @@ class Button extends React.Component {
         var className = labelStyles.className || "btn btn-default";
 
         return (
-            <div>
-                <button key={key} id={htmlAttrs.id} className={className}
-                    style={labelStyles.inlineStyle} onClick={this._onClick} type="submit">
-                    {this.props.labelText}
-                </button>
-            </div>
+
+            <button key={key} id={htmlAttrs.id} className={className}
+                style={labelStyles.inlineStyle} onClick={this._onClick} type="submit">
+                {this.props.labelText}
+            </button>
+
         );
     }
 }

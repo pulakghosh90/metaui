@@ -2,10 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import pathToRegexp from "path-to-regexp";
 import { URLS } from "constants/Constants";
-import { Home, Login, Container, EmployeeGrid, Settings, Timecard, SimpleEditor } from "constants/ViewConstants";
+import {
+    Home, Login, Container, EmployeeGrid, Settings, Timecard, SimpleEditor,
+    EntityEditor, RuleEditor
+} from "constants/ViewConstants";
 
 class RouteManager {
     getView(url) {
+        console.log(url);
         var View;
         if (this.match(URLS.EMPLOYEES, url)) {
             View = EmployeeGrid;
@@ -22,6 +26,12 @@ class RouteManager {
         else if (this.match(URLS.TIMECARD, url)) {
             View = Timecard;
         }
+        else if (this.match(URLS.ENTITY, url)) {
+            View = EntityEditor;
+        }
+        else if (this.match(URLS.RULE, url)) {
+            View = RuleEditor;
+        }
         else {
             View = null;
         }
@@ -35,7 +45,7 @@ class RouteManager {
     gotToHome() {
         document.body.style.backgroundColor = "#fff";
         ReactDOM.render(
-            <Container View={Home} />,
+            <Container View={Home} ViewUrl={URLS.HOME} />,
             document.getElementById("app")
         );
     }

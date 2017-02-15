@@ -1,8 +1,10 @@
 import React from "react";
-import { TimecardFilter, Row, Col, GriddleGrid } from "constants/Components";
+import { TimecardFilter, Row, Col, GriddleGrid, Message } from "constants/Components";
 import ReactTableRenderer from "renderer/ReactTableRenderer.jsx";
 import ServiceManager from "service/ServiceManager";
 import AppUtil from "util/AppUtil";
+import ReactCommon from "common/ReactCommon";
+import moment from "moment";
 
 const commonFieldProps = {
     textBox: {
@@ -52,7 +54,7 @@ class Timecard extends React.Component {
         this.componentId = response.data.name;
         this.modelEntity = response.data.modelEntity;
 
-        this.state = { results: [], filter: { employees: [], payPeriods: [] } };
+        this.state = { timePairs: [], filter: { employees: [], payPeriods: [] }, message: {} };
     }
     componentDidMount() {
         debugger;
@@ -77,6 +79,7 @@ class Timecard extends React.Component {
                         <div style={{ fontSize: "30px", paddingBottom: "10px" }}>Timecard Editor</div>
                     </Col>
                 </Row>
+                {this.state.message !== {} && <Message {...this.state.message} />}
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
                         <TimecardFilter {...this.state.filter} onFilterChange={this._onFilterChange} />
@@ -84,7 +87,9 @@ class Timecard extends React.Component {
                 </Row>
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
-                        <GriddleGrid results={this.state.results} columnMetadata={this.columnMetadata} columns={this.columns} />
+                        <GriddleGrid results={this.state.timePairs} columnMetadata={this.columnMetadata}
+                            columns={this.columns} tableClassName="table table-hover"
+                            useGriddleStyles={false} showPager={false} resultsPerPage={this.state.timePairs.length} />
                     </Col>
                 </Row>
                 <Row>
@@ -94,38 +99,60 @@ class Timecard extends React.Component {
         );
     }
     onFilterChange(val) {
-        debugger;
+        var _this = this;
         var filter = {
             filters: [
                 {
                     "fieldName": Object.keys(val)[0],
                     "operator": "=",
                     "value": Object.values(val)[0],
-
                 }]
         };
-        var _this = this;
         ServiceManager.getEntityList(this.modelEntity, filter)
-            .then(response => _this.setState({ results: AppUtil.timePairDateFormat(response.data) }))
+            .then(response => _this.setState({ timePairs: AppUtil.timePairDateFormat(response.data) }))
             .catch(error => console.log(error));
     }
     onTimePairChange(timePair) {
-        debugger;
-        var timePairs = this.state.results;
-        timePairs = timePairs.map(tp => {
-            if (tp.key === timePair.key) {
+        var timePairs = this.state.timePairs.map(tp => {
+            if (tp.SYSTEMID === timePair.SYSTEMID) {
                 return timePair;
             } else {
                 return tp;
             }
         });
-        this.setState({ results: timePairs });
+        this.setState({ timePairs: timePairs });
     }
     onSave() {
         debugger;
+        var _this = this;
+        var timepairs = this.state.timePairs.map(tp => {
+            return Object.assign({},
+                { INTIME: moment(tp.INTIME).format("YYYY-MM-DDTHH:mm:ss") },
+                { OUTTIME: moment(tp.OUTTIME).format("YYYY-MM-DDTHH:mm:ss") },
+                { EMPLOYEEID: tp.EMPLOYEEID },
+                { SYSTEMID: tp.SYSTEMID }
+            );
+        });
+        ServiceManager.saveEntityList(this.modelEntity, timepairs)
+            .then(response => {
+                _this.setState({
+                    message: {
+                        type: response.status,
+                        message: "Save successful!"
+                    }
+                });
+            })
+            .catch(error => {
+                _this.setState({
+                    message: {
+                        type: "error",
+                        message: "Error occured while save!"
+                    }
+                });
+            });
     }
     onCancel() {
-        debugger;
+        ReactCommon.goBack();
     }
 }
 

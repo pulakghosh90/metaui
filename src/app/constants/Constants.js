@@ -1,9 +1,11 @@
 const URLS = {
+    HOME: "#/home",
     EMPLOYEES: "#/employees",
     EMPLOYEE_EDITOR: "#/employees/:id",
-    HOME: "#/home",
+    TIMECARD: "#/timecard",
     SETTINGS: "#/settings",
-    TIMECARD: "#/timecard"
+    ENTITY: "#/settings/entity",
+    RULE: "#/settings/rule"
 };
 
 const SERVICE = {

@@ -82,6 +82,10 @@ class ServiceManager {
         var url = AppUtil.getDataServiceUrl(entityType);
         return this.callServiceAsync({ method: "PUT", url: url, json: JSON.stringify(entity) });
     }
+    saveEntityList(entityType, entity) {
+        var url = AppUtil.getDataServiceUrl(entityType, true);
+        return this.callServiceAsync({ method: "POST", url: url, json: JSON.stringify(entity) });
+    }
     deleteEntity(entityType, entity) {
         var url = AppUtil.getDataServiceUrl(entityType);
         return this.callServiceAsync({ method: "DELETE", url: url, json: JSON.stringify(entity) });
@@ -89,6 +93,36 @@ class ServiceManager {
     getViewDef(entity, layout) {
         var url = AppUtil.getViewDefServiceUrl(entity, layout);
         return this.callServiceSync({ method: "GET", url: url });
+    }
+    getEntityMetaList() {
+        return new Promise((resolve, reject) => {
+            var response = {
+                status: "success",
+                data: [{ label: "EMPLOYEE", value: "EMPLOYEE" }, { label: "TIMEPAIR", value: "TIMEPAIR" }]
+            }
+            resolve(response);
+        });
+    }
+    getFiledMetadata(entityName) {
+        var url = AppUtil.getFieldMetaServiceUrl(entityName);
+        return this.callServiceAsync({ method: "GET", url: url });
+    }
+    getEntityMetadata(entityName) {
+        var url = AppUtil.getEntityMetaServiceUrl(entityName);
+        return this.callServiceAsync({ method: "GET", url: url });
+    }
+    getRuleMetaList() {
+        return new Promise((resolve, reject) => {
+            var response = {
+                status: "success",
+                data: [{ label: "eTimecardProcessing", value: "eTimecardProcessing" }]
+            }
+            resolve(response);
+        });
+    }
+    getRuleMetadata(ruleName) {
+        var url = AppUtil.getRuleMetaServiceUrl(ruleName);
+        return this.callServiceAsync({ method: "GET", url: url });
     }
 }
 

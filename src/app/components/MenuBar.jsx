@@ -18,7 +18,16 @@ class MenuBar extends React.Component {
                     <ul className="nav navbar-nav">
                         <li><Link href={URLS.EMPLOYEES} value="Employee" onClick={this.props.onSelectClick} /></li>
                         <li><Link href={URLS.TIMECARD} value="Timecard" onClick={this.props.onSelectClick} /></li>
-                        <li><Link href={URLS.SETTINGS} value="Settings" onClick={this.props.onSelectClick} /></li>
+                        <li className="dropdown">
+                            <Link href={URLS.SETTINGS} value="Settings" onClick={this.props.onSelectClick}
+                                className="dropdown-toggle" dataToggle="dropdown" role="button" ariaHaspopup ariaExpanded="false">
+                                <span className="caret"></span>
+                            </Link>
+                            <ul className="dropdown-menu">
+                                <li><Link href={URLS.ENTITY} value="Entity" onClick={this.props.onSelectClick} /></li>
+                                <li><Link href={URLS.RULE} value="Rule" onClick={this.props.onSelectClick} /></li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
             </nav>

@@ -13,8 +13,10 @@ class Link extends React.Component {
         var href = this.props.href || "#";
         return (
             <a href={href} id={this.props.id} className={className} onClick={this._onClick}
-                style={this.props.style}>
+                style={this.props.style} data-toggle={this.props.dataToggle} role={this.props.role}
+                aria-haspopup={this.props.ariaHaspopup} aria-expanded={this.props.ariaExpanded}>
                 {this.props.value}
+                {this.props.children}
             </a>
         );
     }

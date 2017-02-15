@@ -17,12 +17,9 @@ class Label extends React.Component {
     render() {
         var htmlAttrs = this.props.htmlAttrs;
         var labelStyles = this.props.styles.label;
-        var key = htmlAttrs.key || htmlAttrs.id;
-
         return (
             <div>
-                <label key={key} id={htmlAttrs.id} className={labelStyles.className}
-                    style={labelStyles.inlineStyle}>
+                <label id={htmlAttrs.id} className={labelStyles.className} style={labelStyles.inlineStyle}>
                     {this.props.labelText}
                 </label>
             </div>

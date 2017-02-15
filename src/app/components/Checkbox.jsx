@@ -52,7 +52,7 @@ class Checkbox extends React.Component {
         var value = this._findValue();
         return (
             <div >
-                <input type="checkbox" id={htmlAttrs.id} value={value}
+                <input type="checkbox" id={htmlAttrs.id} checked={value}
                     onClick={this._onClick} />
                 {
                     this.props.labelText &&

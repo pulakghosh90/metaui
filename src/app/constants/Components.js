@@ -11,6 +11,7 @@ import MenuBar from "components/MenuBar.jsx";
 import GriddleGrid, { GridCustomComponents } from "components/GriddleGrid.jsx";
 import TimecardFilter from "components/TimecardFilter.jsx";
 import Message from "components/Message.jsx";
+import TextStatic from "components/TextStatic.jsx";
 
 export {
     Button,
@@ -26,5 +27,6 @@ export {
     GriddleGrid,
     GridCustomComponents,
     TimecardFilter,
-    Message
+    Message,
+    TextStatic
 };

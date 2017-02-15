@@ -5,6 +5,8 @@ import Container from "views/Container.jsx";
 import SimpleEditor from "views/SimpleEditor.jsx";
 import Timecard from "views/Timecard.jsx";
 import Settings from "views/Settings.jsx";
+import RuleEditor from "views/RuleEditor.jsx";
+import EntityEditor from "views/EntityEditor.jsx";
 
 export {
     Home,
@@ -13,5 +15,7 @@ export {
     Container,
     SimpleEditor,
     Timecard,
-    Settings
+    Settings,
+    RuleEditor,
+    EntityEditor
 };

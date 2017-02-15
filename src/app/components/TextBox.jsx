@@ -52,7 +52,6 @@ class TextBox extends React.Component {
         var inputStyles = this.props.styles.input || {};
         var labelStyles = this.props.styles.label || {};
         var value = this._findValue();
-        var key = htmlAttrs.key || htmlAttrs.id;
         var type = htmlAttrs.password ? "password" : "text";
         return (
             <div>
@@ -62,11 +61,8 @@ class TextBox extends React.Component {
                         {this.props.labelText}
                     </label>
                 }
-                <input type={type} key={key} id={htmlAttrs.id} className={inputStyles.className}
-                    style={inputStyles.inlineStyle}
-                    placeholder={htmlAttrs.placeholder}
-                    value={value}
-                    onChange={this._onChange} />
+                <input type={type} id={htmlAttrs.id} className={inputStyles.className} style={inputStyles.inlineStyle}
+                    placeholder={htmlAttrs.placeholder} value={value} onChange={this._onChange} />
             </div>
         );
     }

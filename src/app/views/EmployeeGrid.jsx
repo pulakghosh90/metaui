@@ -37,7 +37,7 @@ class EmployeeGrid extends React.Component {
     handleClick(evt) {
         debugger;
         var data = {
-            selectedId: evt.target.innerHTML
+            selectedId: evt.target.innerText
         };
         var EditorObj = RouteManager.getView(evt.target.hash);
         EditorObj.param = data;

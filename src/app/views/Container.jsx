@@ -3,14 +3,16 @@ import { TableGrid, Row, Col, MenuBar } from "constants/Components";
 import SimpleEditor from "views/SimpleEditor.jsx";
 import RouteManager from "common/RouteManager";
 import ReactCommon from "common/ReactCommon";
+import { URLS } from "constants/Constants";
 
 class Container extends React.Component {
     constructor(props) {
+        debugger;
         super(props);
         this.state = {
             CurrentView: this.props.View,
             currentViewUrl: this.props.ViewUrl,
-            previousViewUrl: null,
+            previousViewUrl: URLS.HOME,
             param: {}
         };
         this._onSelectClick = this.onSelectClick.bind(this);
@@ -39,6 +41,7 @@ class Container extends React.Component {
         );
     }
     onSelectClick(evt) {
+        debugger;
         if (this.state.currentViewUrl !== evt.target.hash) {
             var ViewObj = RouteManager.getView(evt.target.hash);
             if (ViewObj) {
@@ -47,12 +50,14 @@ class Container extends React.Component {
         }
     }
     changeView(ViewObj) {
-        this.setState({
-            CurrentView: ViewObj.View,
-            previousViewUrl: this.state.currentViewUrl,
-            currentViewUrl: ViewObj.url,
-            param: ViewObj.param
-        });
+        if (ViewObj && ViewObj.View) {
+            this.setState({
+                CurrentView: ViewObj.View,
+                previousViewUrl: this.state.currentViewUrl,
+                currentViewUrl: ViewObj.url,
+                param: ViewObj.param
+            });
+        }
     }
     back() {
         var PrevView = RouteManager.getView(this.state.previousViewUrl);

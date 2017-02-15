@@ -10,23 +10,34 @@ const commonFieldProps = {
         labelText: null,
         htmlAttrs: { password: false },
         styles: {
-            input: { className: "" },
+            input: {
+                inlineStyle: { width: "190px" }
+            },
             label: {
-                inlineStyle: {
-                    width: "200px",
-                    wordWrap: "break-word"
-                }
+                inlineStyle: { width: "150px", wordWrap: "break-word" }
             }
         },
         handlers: {},
         rules: {},
         validator: () => { }
     },
+    textStatic: {
+        labelText: "",
+        value: "",
+        htmlAttrs: {},
+        styles: {
+            label: {
+                inlineStyle: { width: "150px", wordWrap: "break-word" }
+            },
+            value: { inlineStyle: { fontWeight: 100 } }
+        },
+        bindAttr: null
+    },
     checkBox: {
         labelText: null,
         htmlAttrs: {},
         styles: {
-            label: { className: "", inlineStyle: {} }
+            label: { inlineStyle: {} }
         },
         value: false,
         handlers: {},
@@ -35,7 +46,7 @@ const commonFieldProps = {
     action: {
         labelText: "",
         htmlAttrs: {},
-        styles: { label: { className: "" } },
+        styles: { label: {} },
         handlers: {}
     }
 };
@@ -130,7 +141,7 @@ class SimpleEditor extends React.Component {
                 _this.setState({
                     message: {
                         type: response.status,
-                        message: response.status === "success" ? "Save successful!" : "Save failed!"
+                        message: "Save successful!"
                     }
                 });
             })

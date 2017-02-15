@@ -1,5 +1,5 @@
 import React from "react";
-import { TextBox, Row, Col, Button, Checkbox } from "constants/Components";
+import { TextBox, Row, Col, Button, Checkbox, TextStatic } from "constants/Components";
 import { SimpleEditor } from "constants/ViewConstants";
 import _ from "lodash";
 
@@ -9,7 +9,6 @@ class ReactRenderer {
         this.renderRow = this.renderRow.bind(this);
         this.renderCell = this.renderCell.bind(this);
         this.createComponent = this.createComponent.bind(this);
-        this.getComponentProps = this.getComponentProps.bind(this);
     }
     render(viewDef, commonProps) {
         this.commonProps = commonProps;
@@ -26,52 +25,49 @@ class ReactRenderer {
         var len = cells.length;
         var colSpan = 12 / len;
         var fieldMetadata = cell.fieldMetadata;
-        var Component;
+        var component;
         var Cell;
         if (cell.fieldMetadata && !cell.modelElement.includes("ADDRESS") && !cell.modelElement.includes("SERVICEDATES")) {
             if (cell.fieldMetadata.isPrimaryKey) {
                 this.primaryKey = cell.fieldMetadata.name;
             }
-            Component = this.createComponent(cell.fieldMetadata);
-            var textFieldProps = this.getComponentProps(cell, index);
+            component = this.createComponent(cell.fieldMetadata);
+            // var textFieldProps = this.getComponentProps(cell, index);
             Cell = (
                 <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan} key={"cell:" + index} >
-                    <Component {...textFieldProps} />
+                    {component}
                 </Col>
             );
-        } else if (cell.action) {
+        } else if (cell.action && cell.action === "SAVE") {
+            var buttons = [];
+
             var btnProps = _.merge({}, this.commonProps.action, { handlers: {} });
             var handlers = this.commonProps.action.handlers;
-            var btnClass;
-            var onClick;
-            var labelText;
-            switch (cell.action) {
-                case "SAVE":
-                    btnClass = "btn btn-primary";
-                    onClick = handlers.onSave;
-                    labelText = "SAVE";
-                    break;
-                case "DELETE":
-                    btnClass = "btn btn-danger";
-                    onClick = handlers.onDelete;
-                    labelText = "DELETE";
-                    break;
-                case "CANCEL":
-                    btnClass = "btn btn-default";
-                    onClick = handlers.onCancel;
-                    labelText = "CANCEL";
-                    break;
-                default:
-                    btnClass = "btn btn-default";
-                    break;
-            };
-            btnProps.handlers.onClick = onClick;
-            btnProps.styles.label.className = btnClass;
-            btnProps.labelText = labelText;
+            btnProps.handlers.onClick = handlers.onSave;
+            btnProps.styles.label.className = "btn btn-primary";
+            btnProps.styles.label.inlineStyle = { marginRight: "5px", marginLeft: "5px" };
+            btnProps.labelText = "SAVE";
+            buttons.push((<Button {...btnProps} key="SAVE" />));
+
+            btnProps = _.merge({}, this.commonProps.action, { handlers: {} });
+            handlers = this.commonProps.action.handlers;
+            btnProps.handlers.onClick = handlers.onDelete;
+            btnProps.styles.label.className = "btn btn-danger";
+            btnProps.styles.label.inlineStyle = { marginRight: "5px", marginLeft: "5px" };
+            btnProps.labelText = "DELETE";
+            buttons.push((<Button {...btnProps} key="DELETE" />));
+
+            btnProps = _.merge({}, this.commonProps.action, { handlers: {} });
+            handlers = this.commonProps.action.handlers;
+            btnProps.handlers.onClick = handlers.onCancel;
+            btnProps.styles.label.className = "btn btn-default";
+            btnProps.styles.label.inlineStyle = { marginRight: "5px", marginLeft: "5px" };
+            btnProps.labelText = "CANCEL";
+            buttons.push((<Button {...btnProps} key="CANCEL" />));
+
             Cell = (
-                <Col xs={colSpan} sm={colSpan} md={colSpan} lg={colSpan}
-                    key={"cell:" + index} >
-                    <Button {...btnProps} />
+                <Col xs={12} sm={12} md={12} lg={12} key={"cell:" + index} >
+                    {buttons}
                 </Col>
             );
         } else {
@@ -84,48 +80,36 @@ class ReactRenderer {
         return Cell;
     }
     createComponent(fieldMetadata) {
-        switch (fieldMetadata.dataType) {
-            case "STRING":
-                return TextBox;
-            case "BOOLEAN":
-                return Checkbox;
-            default:
-                return TextBox;
-        }
-    }
-    getComponentProps(cell, index) {
-        switch (cell.fieldMetadata.dataType) {
-            case "STRING":
-                return _.merge({}, this.commonProps.textBox,
-                    {
-                        labelText: cell.fieldMetadata.description,
-                        htmlAttrs: {
-                            id: cell.modelElement + index
-                        },
-                        bindAttr: cell.fieldMetadata.key
-                    });
-            case "BOOLEAN":
-                return _.merge({}, this.commonProps.checkBox, {
-                    labelText: cell.fieldMetadata.description,
-                    htmlAttrs: { id: cell.modelElement + index },
-                    styles: {
-                        label: { className: "", inlineStyle: {} }
-                    },
-                    value: false,
-                    handlers: {},
-                    bindAttr: cell.fieldMetadata.key
+        var props;
+        if (fieldMetadata.dataType === "STRING" &&
+            (fieldMetadata.isPrimaryKey || fieldMetadata.fieldType === "CALCULATED")) {
+            props = _.merge({}, this.commonProps.textStatic,
+                {
+                    labelText: fieldMetadata.description,
+                    bindAttr: fieldMetadata.key
                 });
-            default:
-                return _.merge({}, this.commonProps.textBox,
-                    {
-                        labelText: cell.fieldMetadata.description,
-                        htmlAttrs: {
-                            id: cell.modelElement + index
-                        },
-                        bindAttr: cell.fieldMetadata.key
-                    });;
+            return <TextStatic {...props} />;
+        } else if (fieldMetadata.dataType === "STRING" && fieldMetadata.fieldType === "FREE") {
+            props = _.merge({}, this.commonProps.textBox,
+                {
+                    labelText: fieldMetadata.description,
+                    bindAttr: fieldMetadata.key
+                });
+            return <TextBox {...props} />;
+        } else if (fieldMetadata.dataType === "BOOLEAN" && fieldMetadata.fieldType === "FREE") {
+            props = _.merge({}, this.commonProps.checkBox, {
+                labelText: fieldMetadata.description,
+                styles: {
+                    label: { className: "", inlineStyle: {} }
+                },
+                value: false,
+                handlers: {},
+                bindAttr: fieldMetadata.key
+            });
+            return <Checkbox {...props} />;
+        } else {
+            return null;
         }
-
     }
 }
 

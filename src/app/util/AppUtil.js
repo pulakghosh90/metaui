@@ -24,6 +24,21 @@ class AppUtil {
         var params = [{ pattern: ":entity", replacement: entity }, { pattern: ":layout", replacement: layout }];
         return this.replaceUrlNamedParams(url, params);
     }
+    getFieldMetaServiceUrl(entityName) {
+        var url = METASERVICE_API_ROOT + SERVICE.METASERVICE.FIELD;
+        var params = [{ pattern: ":entity", replacement: entityName }];
+        return this.replaceUrlNamedParams(url, params);
+    }
+    getEntityMetaServiceUrl(entityName) {
+        var url = METASERVICE_API_ROOT + SERVICE.METASERVICE.ENTITY;
+        var params = [{ pattern: ":entity", replacement: entityName }];
+        return this.replaceUrlNamedParams(url, params);
+    }
+    getRuleMetaServiceUrl(ruleName) {
+        var url = METASERVICE_API_ROOT + SERVICE.METASERVICE.RULE;
+        var params = [{ pattern: ":rule", replacement: ruleName }];
+        return this.replaceUrlNamedParams(url, params);
+    }
     getDataServiceUrl(entityType, isList, uriSuffix, isLookup) {
         var url = DATASERVICE_API_ROOT + SERVICE.DATASERVICE;
         var params = [{ pattern: ":entityType", replacement: entityType }];
@@ -45,8 +60,8 @@ class AppUtil {
         return timepairList.map(timepair => Object.assign(
             {},
             timepair,
-            { INTIME: moment(timepair.INTIME).format("YYYY/MM/DD hh:mm:ss") },
-            { OUTTIME: moment(timepair.OUTTIME).format("YYYY/MM/DD hh:mm:ss") }
+            { INTIME: moment(timepair.INTIME).format("YYYY-MM-DDTHH:mm:ss") },
+            { OUTTIME: moment(timepair.OUTTIME).format("YYYY-MM-DDTHH:mm:ss") }
         ));
     }
 }

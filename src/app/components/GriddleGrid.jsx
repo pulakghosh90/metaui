@@ -30,7 +30,7 @@ class GriddleGrid extends React.Component {
     }
     render() {
         return (
-            <Griddle {...this.props} tableClassName="table table-hover" useGriddleStyles={false} showPager={false} />
+            <Griddle {...this.props}  />
         );
     }
 }
@@ -38,7 +38,6 @@ class GriddleGrid extends React.Component {
 const GridCustomComponents = {
     TextBox
 };
-
 export {
     GridCustomComponents
 };
