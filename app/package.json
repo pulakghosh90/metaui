@@ -1,0 +1,37 @@
+{
+  "name": "eTimecarUI",
+  "version": "1.0.0",
+  "description": "Metadata driven UI",
+  "main": "index.js",
+  "scripts": {
+    "dev": "C:/adp/poc/backend/Source/ADP.TLM.ETimecard/ADP.TLM.ETimecard.UI/app/node_modules/.bin/webpack -d --watch",
+    "build": "C:/adp/poc/backend/Source/ADP.TLM.ETimecard/ADP.TLM.ETimecard.UI/app/node_modules/.bin/webpack -p",
+    "dev-server": "C:/adp/poc/backend/Source/ADP.TLM.ETimecard/ADP.TLM.ETimecard.UI/app/node_modules/.bin/webpack-dev-server --hot"
+  },
+  "keywords": [
+    "eTimecarUI"
+  ],
+  "author": "Pulak Ghosh",
+  "license": "MIT",
+  "dependencies": {
+    "faker": "^3.1.0",
+    "griddle-react": "^0.7.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.17.1",
+    "path-to-regexp": "^1.7.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "grunt": "^1.0.1",
+    "react-bootstrap": "^0.30.7",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
