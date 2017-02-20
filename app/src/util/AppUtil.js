@@ -82,8 +82,8 @@ class AppUtil {
         return timepairList.map(timepair => Object.assign(
             {},
             timepair,
-            { INTIME: moment(timepair.INTIME).format("YYYY-MM-DDTHH:mm:ss") },
-            { OUTTIME: moment(timepair.OUTTIME).format("YYYY-MM-DDTHH:mm:ss") }
+            { INTIME: moment(new Date(timepair.INTIME)).format("YYYY-MM-DD HH:mm:ss") },
+            { OUTTIME: moment(new Date(timepair.OUTTIME)).format("YYYY-MM-DD HH:mm:ss") }
         ));
     }
     getCustomerMetaServiceUrl(orgId) {
@@ -93,6 +93,7 @@ class AppUtil {
         else
             return url;
     }
+
 }
 
 export default new AppUtil();

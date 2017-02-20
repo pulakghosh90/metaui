@@ -56,7 +56,10 @@ class Select extends React.Component {
         var selectStyles = this.props.styles.select || {};
         var labelStyles = this.props.styles.label || {};
         var style = Object.assign({}, labelStyles.inlineStyle, { paddingRight: "10px" });
-        var options = this.props.options || [];
+        var options = typeof this.props.options === "function" ? this.props.options(this.props.lookupTo)
+            : this.props.options;
+        if (!options)
+            options = [];
         var value = this.state.value || this._findValue();
 
         return (

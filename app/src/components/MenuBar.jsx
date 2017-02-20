@@ -19,7 +19,7 @@ class MenuBar extends React.Component {
                         <li><Link href={URLS.EMPLOYEES} value="Employee" onClick={this.props.onSelectClick} /></li>
                         <li><Link href={URLS.TIMECARD} value="Timecard" onClick={this.props.onSelectClick} /></li>
                         <li className="dropdown">
-                            <Link href={URLS.SETTINGS} value="Settings" onClick={this.props.onSelectClick}
+                            <Link href={URLS.SETTINGS} value="Configure Meta" onClick={this.props.onSelectClick}
                                 className="dropdown-toggle" dataToggle="dropdown" role="button" ariaHaspopup ariaExpanded="false">
                                 <span className="caret"></span>
                             </Link>

@@ -54,7 +54,8 @@ const commonFieldProps = {
         value: "",
         handlers: {},
         bindAttr: "",
-    }
+    },
+    lookupFun: null
 };
 
 class SimpleEditor extends React.Component {
@@ -68,6 +69,7 @@ class SimpleEditor extends React.Component {
         this._onDelete = this.onDelete.bind(this);
         this._renderJSON = this.renderJSON.bind(this);
         this._recursiveCloneChildren = this.recursiveCloneChildren.bind(this);
+        this._lookupFun = this.lookupFun.bind(this);
 
         var response = ServiceManager.getViewDef("EMPLOYEE", "EDITOR");
         this.viewDef = response.data;
@@ -89,6 +91,7 @@ class SimpleEditor extends React.Component {
             onDelete: this._onDelete
         };
         this.commonProps.selectBox.handlers = { onChange: this._onChange };
+        this.commonProps.lookupFun = this._lookupFun;
 
         var viewInfo = this._renderJSON(this.props.param.mode);
         this.childComponents = viewInfo.viewDef;
@@ -164,6 +167,15 @@ class SimpleEditor extends React.Component {
     onDelete(evt) {
         debugger;
         console.log(this.state);
+    }
+    lookupFun(lookup) {
+        debugger;
+        var entity = lookup.split(".")[0];
+        var response = ServiceManager.getEntityLookupList(entity, true);
+        if (response && response.status === "success") {
+            return response.data;
+        }
+        return [];
     }
 }
 

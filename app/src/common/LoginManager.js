@@ -19,7 +19,7 @@ class LoginManager {
         console.log(userInfo);
         var userDetails = ServiceManaager.authenticateAndGetUserDetails(userInfo);
         if (userDetails && userDetails.data !== {}) {
-            AppContext.login(userDetails.data.Item);
+            AppContext.login(userDetails.data);
             RouteManager.goToHome();
         } else {
             return {

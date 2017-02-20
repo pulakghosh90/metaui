@@ -1,5 +1,5 @@
 import React from "react";
-import { TimecardFilter, Row, Col, GriddleGrid, Message } from "constants/Components";
+import { TimecardFilter, Row, Col, GriddleGrid, Message, Button } from "constants/Components";
 import ReactTableRenderer from "renderer/ReactTableRenderer.jsx";
 import ServiceManager from "service/ServiceManager";
 import AppUtil from "util/AppUtil";
@@ -63,6 +63,7 @@ class Timecard extends React.Component {
         this._fetchTimePair = this.fetchTimePair.bind(this);
         this._addRow = this.addRow.bind(this);
         this._deleteRow = this.deleteRow.bind(this);
+        this._onReprocess = this.onReprocess.bind(this);
 
         this.commonProps = commonFieldProps;
         this.commonProps.textBox.handlers = { onChange: this._onTimePairChange };
@@ -84,7 +85,7 @@ class Timecard extends React.Component {
         this.componentId = response.data.name;
         this.modelEntity = response.data.modelEntity;
 
-        this.state = { timePairs: [], filter: { employees: [] }, message: {} };
+        this.state = { timePairs: [], filter: { employees: [] }, message: {}, showReprocess: false };
     }
     componentDidMount() {
         debugger;
@@ -92,10 +93,7 @@ class Timecard extends React.Component {
         var employees;
         ServiceManager.getEntityLookupList("EMPLOYEE")
             .then(response => {
-                employees = response.data.reduce((list, val) => {
-                    list.push({ value: val.EMPLOYEEID, label: val.FIRSTNAME + " " + val.LASTNAME });
-                    return list;
-                }, [{ value: "", label: "Select an employee" }]);
+                employees = [{ value: "", label: "Select an employee" }].concat(response.data);
                 _this.setState({ filter: { employees } });
             })
             .catch(error => console.error(error));
@@ -106,13 +104,14 @@ class Timecard extends React.Component {
             <div>
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
-                        <div style={{ fontSize: "30px", paddingBottom: "10px" }}>Timecard Editor</div>
+                        <div style={{ fontSize: "30px", paddingBottom: "10px" }}>Individual Timecard</div>
                     </Col>
                 </Row>
                 {this.state.message !== {} && <Message {...this.state.message} />}
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
-                        <TimecardFilter {...this.state.filter} onFilterChange={this._onFilterChange} />
+                        <TimecardFilter {...this.state.filter} onFilterChange={this._onFilterChange}
+                            onReprocess={this._onReprocess} showReprocess={this.state.showReprocess} />
                     </Col>
                 </Row>
                 <Row>
@@ -123,7 +122,14 @@ class Timecard extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    {this.actions}
+                    <Col xs={12} sm={12} md={12} lg={12} key="btns" style={{ textAlign: "right" }}>
+                        {
+                            this.state.showReprocess &&
+                            <Button labelText="Reprocess" htmlAttrs={{}} styles={{ label: { className: "btn btn-primary" } }}
+                                handlers={{ onClick: this._onReprocess }} />
+                        }
+                        {this.actions}
+                    </Col>
                 </Row>
             </div>
         );
@@ -144,14 +150,14 @@ class Timecard extends React.Component {
             ServiceManager.getEntityList(this.modelEntity, filter)
                 .then(response => {
                     if (response.data && response.data.length > 0) {
-                        _this.setState({ timePairs: AppUtil.timePairDateFormat(response.data) });
+                        _this.setState({ timePairs: AppUtil.timePairDateFormat(response.data), showReprocess: true });
                     } else {
-                        _this.setState({ timePairs: blankTP });
+                        _this.setState({ timePairs: blankTP, showReprocess: false });
                     }
                 })
                 .catch(error => console.log(error));
         } else {
-            _this.setState({ timePairs: [] });
+            _this.setState({ timePairs: [], showReprocess: false });
         }
     }
     onFilterChange(val) {
@@ -174,8 +180,8 @@ class Timecard extends React.Component {
         var timepairs = this.state.timePairs.map(tp => {
             EMPLOYEEID = tp.EMPLOYEEID;
             return Object.assign({},
-                { INTIME: moment(tp.INTIME).format("YYYY-MM-DDTHH:mm:ss") },
-                { OUTTIME: moment(tp.OUTTIME).format("YYYY-MM-DDTHH:mm:ss") },
+                { INTIME: moment(tp.INTIME).format("YYYY-MM-DD HH:mm:ss") },
+                { OUTTIME: moment(tp.OUTTIME).format("YYYY-MM-DD HH:mm:ss") },
                 { EMPLOYEEID: tp.EMPLOYEEID },
                 { SYSTEMID: tp.SYSTEMID }
             );
@@ -228,6 +234,38 @@ class Timecard extends React.Component {
                     message: {
                         type: "error",
                         message: "Error occured while save!"
+                    }
+                });
+            });
+    }
+    onReprocess(evt) {
+        debugger;
+        var _this = this;
+        var EMPLOYEEID;
+        var timepairs = this.state.timePairs.map(tp => {
+            EMPLOYEEID = tp.EMPLOYEEID;
+            return Object.assign({},
+                { INTIME: moment(tp.INTIME).format("YYYY-MM-DDTHH:mm:ss") },
+                { OUTTIME: moment(tp.OUTTIME).format("YYYY-MM-DDTHH:mm:ss") },
+                { EMPLOYEEID: tp.EMPLOYEEID },
+                { SYSTEMID: tp.SYSTEMID }
+            );
+        });
+        ServiceManager.saveEntityList(this.modelEntity, timepairs)
+            .then(response => {
+                this._fetchTimePair("EMPLOYEEID", EMPLOYEEID);
+                _this.setState({
+                    message: {
+                        type: response.status,
+                        message: "Reprocessed successfully!"
+                    }
+                });
+            })
+            .catch(error => {
+                _this.setState({
+                    message: {
+                        type: "error",
+                        message: "Error occured while reprocessing!"
                     }
                 });
             });

@@ -34,7 +34,7 @@ class Container extends React.Component {
                     </Col>
                     <Col xs={6} sm={6} md={6} lg={6} style={{ textAlign: "right" }}>
                         <div style={{ paddingTop: "32px" }}>
-                            ORGID: <span style={{ textDecoration: "underline", fontWeight: "bold" }}>{this.props.loggedInUser.orgId}</span>
+                            CLIENT NAME: <span style={{ textDecoration: "underline", fontWeight: "bold" }}>{this.props.loggedInUser.name}</span>
                             <span>
                                 <Link href="/" onClick={this._logout} style={{ paddingLeft: "10px" }}>Logout</Link>
                             </span>

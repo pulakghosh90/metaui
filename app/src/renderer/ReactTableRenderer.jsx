@@ -18,11 +18,10 @@ class ReactTableRenderer {
         var columnMetadata = [];
         var columns = [];
         var actions = [];
-        var buttons = [];
         var columnMeta;
         columnMetadata = this.createAddDeleteBtn(commonProps);
         columns.push("addRow");
-        columns.push("deleteRow");
+        // columns.push("deleteRow");
         rowsMetaData.map(rowMeta => {
             rowMeta.cells.map((cell, index, arr) => {
                 if (cell.fieldMetadata && cell.fieldMetadata.name !== "EMPLOYEEID" && cell.fieldMetadata.name !== "EMPLOYEE"
@@ -60,14 +59,10 @@ class ReactTableRenderer {
                     btnProps.styles.label.className = btnClass;
                     btnProps.styles.label.inlineStyle = { marginRight: "5px", marginLeft: "5px" };
                     btnProps.labelText = labelText;
-                    buttons.push((<Button {...btnProps} key={"cell:" + index} />));
+                    actions.push((<Button {...btnProps} key={"cell:" + index} />));
                 }
             });
         });
-        var Cell = (
-            <Col xs={12} sm={12} md={12} lg={12} key="btns" style={{ textAlign: "right" }}>{buttons}</Col>
-        );
-        actions.push(Cell);
         return { columnMetadata, columns, actions };
     }
 
@@ -89,21 +84,21 @@ class ReactTableRenderer {
         }
         buttons.push(columnMeta);
 
-        columnMeta = Object.assign({}, columnMetaTemplate);
-        columnMeta.columnName = "deleteRow";
-        columnMeta.order = 1;
-        columnMeta.displayName = "";
-        columnMeta.customComponent = GridCustomComponents.Button;
-        columnMeta.onClick = commonProps.deleteRow.handlers.onClick;
-        columnMeta.icon = "fa fa-minus-square-o";
-        columnMeta.iconStyle = {
-            fontSize: "25px"
-        }
-        columnMeta.style = {
-            background: "#fff",
-            border: "none"
-        }
-        buttons.push(columnMeta);
+        // columnMeta = Object.assign({}, columnMetaTemplate);
+        // columnMeta.columnName = "deleteRow";
+        // columnMeta.order = 1;
+        // columnMeta.displayName = "";
+        // columnMeta.customComponent = GridCustomComponents.Button;
+        // columnMeta.onClick = commonProps.deleteRow.handlers.onClick;
+        // columnMeta.icon = "fa fa-minus-square-o";
+        // columnMeta.iconStyle = {
+        //     fontSize: "25px"
+        // }
+        // columnMeta.style = {
+        //     background: "#fff",
+        //     border: "none"
+        // }
+        // buttons.push(columnMeta);
         return buttons;
     }
 }

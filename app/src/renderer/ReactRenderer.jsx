@@ -90,7 +90,7 @@ class ReactRenderer {
                 });
             return <TextStatic {...props} />;
         } else if (fieldMetadata.dataType === "STRING" &&
-            (fieldMetadata.fieldType === "FREE" || fieldMetadata.fieldType === "LOOKUP")) {
+            (fieldMetadata.fieldType === "FREE")) {
             props = _.merge({}, this.commonProps.textBox,
                 {
                     labelText: fieldMetadata.description,
@@ -104,11 +104,13 @@ class ReactRenderer {
                 bindAttr: fieldMetadata.key
             });
             return <Checkbox {...props} />;
-        } else if (fieldMetadata.dataType === "STRING" && fieldMetadata.fieldType === "OPTIONS") {
+        } else if (fieldMetadata.dataType === "STRING" &&
+            (fieldMetadata.fieldType === "OPTIONS" || fieldMetadata.fieldType === "LOOKUP")) {
             props = _.merge({}, this.commonProps.selectBox, {
                 labelText: fieldMetadata.description,
                 bindAttr: fieldMetadata.key,
-                options: fieldMetadata.options
+                options: fieldMetadata.lookupTo ? this.commonProps.lookupFun : fieldMetadata.options,
+                lookupTo: fieldMetadata.lookupTo
             });
             return <Select {...props} />;
         }

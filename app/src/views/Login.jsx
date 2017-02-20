@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Checkbox, Label, TextBox, Row, Col, Message } from "constants/Components";
+import { Button, Checkbox, Label, TextBox, Row, Col, Message, Image } from "constants/Components";
 import LoginManager from "common/LoginManager";
 
 class Login extends React.Component {
@@ -65,10 +65,10 @@ class Login extends React.Component {
         };
 
         var labelProps = {
-            labelText: "Please login",
+            labelText: "ADP Time & Attendance",
             htmlAttrs: { id: "login:label" },
             styles: {
-                label: { className: "form-signin-heading", inlineStyle: { fontSize: "35px" } }
+                label: { className: "form-signin-heading", inlineStyle: { fontSize: "25px" } }
             }
         };
         var buttonProps = {
@@ -87,9 +87,7 @@ class Login extends React.Component {
         return (
             <Row>
                 <Col xs={12} sm={12} md={12} lg={12}>
-                    {this.state.errorMsg &&
-                        <Message {...message} className="form-signin" />
-                    }
+                    {this.state.errorMsg && <Message {...message} className="form-signin" />}
                     <Row>
                         <Col xs={12} sm={12} md={12} lg={12}>
                             <form className="form-signin">

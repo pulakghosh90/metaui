@@ -74,9 +74,12 @@ class ServiceManager {
         var url = AppUtil.getDataServiceUrl(entityType, true, "read");
         return this.callServiceAsync({ method: "POST", url: url, json: JSON.stringify(filter) });
     }
-    getEntityLookupList(entityType) {
-        var url = AppUtil.getDataServiceUrl(entityType, true, "read", false);
-        return this.callServiceAsync({ method: "POST", url: url });
+    getEntityLookupList(entityType, sync) {
+        var url = AppUtil.getDataServiceUrl(entityType, true, "read", true);
+        if (sync)
+            return this.callServiceSync({ method: "POST", url: url });
+        else
+            return this.callServiceAsync({ method: "POST", url: url });
     }
     saveEntity(entityType, entity) {
         var url = AppUtil.getDataServiceUrl(entityType);
@@ -94,21 +97,11 @@ class ServiceManager {
         var url = AppUtil.getViewDefServiceUrl(entity, false, layout);
         return this.callServiceSync({ method: "GET", url: url });
     }
-    getEntityMetaList() {
-        return new Promise((resolve, reject) => {
-            var response = {
-                status: "success",
-                data: [{ label: "EMPLOYEE", value: "EMPLOYEE" }, { label: "TIMEPAIR", value: "TIMEPAIR" }]
-            }
-            resolve(response);
-        });
-    }
     getFieldMetadata(entityName) {
         var url = AppUtil.getFieldMetaServiceUrl(entityName);
         return this.callServiceAsync({ method: "GET", url: url });
     }
     saveFieldMetadata(entityName, fieldMeta) {
-        debugger;
         var url = AppUtil.getFieldMetaServiceUrl(entityName);
         return this.callServiceAsync({ method: "POST", url: url, json: fieldMeta });
     }

@@ -5,7 +5,7 @@ import ServiceManager from "service/ServiceManager";
 import ReactCommon from "common/ReactCommon";
 
 const commonProps = {
-    labelText: "Select Entity:",
+    labelText: "Select Rule:",
     htmlAttrs: {},
     styles: {
         select: { className: "", inlineStyle: {} },
@@ -108,7 +108,7 @@ class RuleEditor extends React.Component {
                 .then(response => {
                     _this.setState({
                         ruleDef: response.data,
-                        ruleScript: response.data.Item.script,
+                        ruleScript: response.data.script,
                         selectedRule: val.RULENAME
                     });
                 })
@@ -117,14 +117,14 @@ class RuleEditor extends React.Component {
     }
     onChange(evt) {
         debugger;
-        this.state.ruleDef.Item.script = evt.target.value;
+        this.state.ruleDef.script = evt.target.value;
         this.setState({ ruleScript: evt.target.value });
     }
     onSave() {
         debugger;
         var _this = this;
-        var scripts = this.state.ruleDef.Item.script.replace(/\\n/g, "\\n").replace(/\\r/g, "\\r");
-        this.state.ruleDef.Item.script = scripts;
+        var scripts = this.state.ruleDef.script.replace(/\\n/g, "\\n").replace(/\\r/g, "\\r");
+        this.state.ruleDef.script = scripts;
         ServiceManager.saveRuleMetadata(this.state.selectedRule, JSON.stringify(this.state.ruleDef))
             .then(response => {
                 _this.setState({

@@ -28,9 +28,10 @@ class TimecardFilter extends React.Component {
             this.employeeProps.value = "";
         return (
             <Row style={{ paddingBottom: "10px" }}>
-                <Col xs={5} sm={5} md={5} lg={5}>
+                <Col xs={3} sm={3} md={3} lg={3}>
                     <Select {...this.employeeProps} handlers={{ onChange: this.props.onFilterChange }} />
                 </Col>
+                <Col xs={9} sm={9} md={9} lg={9} />
             </Row>
         );
     }

@@ -87,6 +87,7 @@ class EntityEditor extends React.Component {
                 </Row>
                 <Row style={{ paddingBottom: "10px" }}>
                     <Col xs={12} sm={12} md={12} lg={12}>
+                        <label>Entity Definition</label>
                         <textarea rows="3" style={{ width: "100%" }} value={this.state.entityDef}
                             onChange={this._onEntityDefChange}>
                         </textarea>
@@ -94,6 +95,7 @@ class EntityEditor extends React.Component {
                 </Row>
                 <Row>
                     <Col xs={12} sm={12} md={12} lg={12}>
+                        <label>Field Definition</label>
                         <textarea rows="15" style={{ width: "100%" }} value={this.state.fieldDef}
                             onChange={this._onFieldDefChange}>
                         </textarea>
@@ -113,13 +115,13 @@ class EntityEditor extends React.Component {
         var _this = this;
         ServiceManager.getEntityMetadata(val.ENTITYNAME)
             .then(response => {
-                _this.setState({ entityDef: JSON.stringify(response.data), selectedEntity: val.ENTITYNAME });
+                _this.setState({ entityDef: JSON.stringify(response.data, null, '\t'), selectedEntity: val.ENTITYNAME });
             })
             .catch(error => console.error(error));
 
         ServiceManager.getFieldMetadata(val.ENTITYNAME)
             .then(response => {
-                _this.setState({ fieldDef: JSON.stringify(response.data) });
+                _this.setState({ fieldDef: JSON.stringify(response.data, null, '\t') });
             })
             .catch(error => console.error(error));
     }
